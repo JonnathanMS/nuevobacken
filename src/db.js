@@ -13,7 +13,7 @@ export const connectDB = async () => {
         //     res.send("Esta activo el backend")
         // })
     } catch (error) {
-        console.error(error);
+        console.error("Hubo un error al conectarse con mongoDB:", error);
     }
 };
 

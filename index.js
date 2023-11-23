@@ -5,20 +5,15 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const port = process.env.PORT || 4000;
-const connectDB = async () => {
-    try {
-        // await mongoose.connect(`mongodb+srv://jonnathanmonroybd:${TOKEN_SECRET}@cluster0.j8kwwty.mongodb.net/?retryWrites=true&w=majority`);
-        const url = process.env.MONGODB_CONNECT_URI;
-        await mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-        console.log("MongoDB is connected");
-        // router.get("/", (req, res) => {
-        //     res.send("Esta activo el backend")
-        // })
-    } catch (error) {
-        console.error(error);
-    }
-};
-connectDB(); // se ejecuta la conexion a la base de datos.
+
+mongoose.connect(
+    process.env.MONGODB_CONNECT_URI,
+    { useNewUrlParser: true, useUnifiedTopology: true }
+)
+    .then(() => console.log('connected'))
+    .catch(e => console.log(e));
+
+// connectDB(); // se ejecuta la conexion a la base de datos.
 
 //IMPORTANTE
 //Genero estas importaciones aqui para evitar el error de mongoose de métodos de los modelos que permiten ser usados antes de la conexion con mongoose.
