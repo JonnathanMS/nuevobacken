@@ -4,11 +4,14 @@ import bcrypt from 'bcryptjs'; // modulo para encryptar la contraseña del usuar
 import jwt from 'jsonwebtoken'; // genera un string que permite validar si ya habia habido autenticacion aqui usamos el modulo json webtoken 
 import { createAccessToken } from '../libs/jwt.js';
 import { TOKEN_SECRET } from '../config.js';
+import { connectDB } from '../db.js';
 
 
 
 
 export const updatePassword = async (req, res) => {
+    let conexion = await connectDB();
+    console.log("conexion a mongo", conexion);
     // console.log(req.body);
     const { username, nombres, apellidos, cedula, celular, fecha, email, password, antiguoEmail, antiguoPassword } = req.body; // aqui estamos recibiendo lo del request body que envia el usuario e igualamos el objeto para extraer las variables.
     // console.log(email, password, username); 1) entra el json del request body
@@ -46,6 +49,8 @@ export const updatePassword = async (req, res) => {
 };
 
 export const register = async (req, res) => {
+    let conexion = await connectDB();
+    console.log("conexion a mongo", conexion);
     // console.log(req.body);
     const { apellidos, cedula, celular, citas, email, fecha, nombres, password, username } = req.body; // aqui estamos recibiendo lo del request body que envia el usuario e igualamos el objeto para extraer las variables.
     // console.log(email, password, username); 1) entra el json del request body
@@ -107,6 +112,8 @@ export const register = async (req, res) => {
 };
 
 export const login = async (req, res) => {
+    let conexion = await connectDB();
+    console.log("conexion a mongo", conexion);
     // console.log(req.body);
     const { email, password } = req.body; // aqui estamos recibiendo lo del request body que envia el usuario e igualamos el objeto para extraer las variables.
     // console.log(email, password, username); 1) entra el json del request body
@@ -163,6 +170,8 @@ export const logout = (req, res) => { // aqui estamos cambiando el tiempo de val
 }
 
 export const profile = async (req, res) => {
+    let conexion = await connectDB();
+    console.log("conexion a mongo", conexion);
     // console.log(req.user); // este req.user fue el que guardamos en validateToken.js
     const userFound = await User.findById(req.user.id); // este comando busca en la base de datos de mongo el usuario por su id y retorna todos los datos.
     // es necesario poner el await para que espere a que traiga los datos del usuario antes de continuar
@@ -188,6 +197,8 @@ export const profile = async (req, res) => {
 
 
 export const verifyToken = async (req, res) => {
+    let conexion = await connectDB();
+    console.log("conexion a mongo", conexion);
     const { token } = req.cookies
     if (!token) return res.status(401).json({ message: "No esta autorizado. No hay token" }); // Esto indicaria que no habia token
 

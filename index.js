@@ -1,19 +1,19 @@
 import app from './src/app.js' // en app.js estamos ejecutando express que es el servidor
-// import { connectDB } from "./src/db.js";
+import { connectDB } from "./src/db.js";
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 dotenv.config();
 
 const port = process.env.PORT || 4000;
 
-mongoose.connect(
-    process.env.MONGODB_CONNECT_URI,
-    { useNewUrlParser: true, useUnifiedTopology: true }
-)
-    .then(() => console.log('connected'))
-    .catch(e => console.log(e));
+// mongoose.connect(
+//     process.env.MONGODB_CONNECT_URI,
+//     { useNewUrlParser: true, useUnifiedTopology: true }
+// )
+//     .then(() => console.log('connected'))
+//     .catch(e => console.log(e));
 
-// connectDB(); // se ejecuta la conexion a la base de datos.
+connectDB(); // se ejecuta la conexion a la base de datos.
 
 //IMPORTANTE
 //Genero estas importaciones aqui para evitar el error de mongoose de métodos de los modelos que permiten ser usados antes de la conexion con mongoose.
