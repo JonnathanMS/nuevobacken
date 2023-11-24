@@ -2,8 +2,8 @@ import Task from "../models/task.model.js";
 
 export const getTasks = async (req, res) => {
     try {
-        let conexion = await connectDB();
-        console.log("conexion a mongo", conexion);
+
+
         const tasks = await Task.find({ user: req.user.id }).populate("user"); // aqui es donde usamos el id del usuario AUTENTICADO para traer solo sus tareas, El .populate trae la info del usuario tambien
         res.json(tasks);
     } catch (error) {
@@ -13,8 +13,8 @@ export const getTasks = async (req, res) => {
 
 export const createTask = async (req, res) => {
     try {
-        let conexion = await connectDB();
-        console.log("conexion a mongo", conexion);
+
+
         const { title, description, date } = req.body;
         const newTask = new Task({
             title,
@@ -31,8 +31,8 @@ export const createTask = async (req, res) => {
 
 export const deleteTask = async (req, res) => {
     try {
-        let conexion = await connectDB();
-        console.log("conexion a mongo", conexion);
+
+
         const deletedTask = await Task.findByIdAndDelete(req.params.id);
         if (!deletedTask)
             return res.status(404).json({ message: "Tarea no encontrada" });
@@ -45,8 +45,8 @@ export const deleteTask = async (req, res) => {
 
 export const updateTask = async (req, res) => {
     try {
-        let conexion = await connectDB();
-        console.log("conexion a mongo", conexion);
+
+
         const { title, description, date } = req.body;
         const taskUpdated = await Task.findOneAndUpdate(
             { _id: req.params.id },
@@ -61,8 +61,8 @@ export const updateTask = async (req, res) => {
 
 export const getTask = async (req, res) => {
     try {
-        let conexion = await connectDB();
-        console.log("conexion a mongo", conexion);
+
+
         const task = await Task.findById(req.params.id); // .populate('user'); para traer en cada tarea los datos del usuario.
         if (!task) return res.status(404).json({ message: "Tarea no encontrada" });
         return res.json(task);

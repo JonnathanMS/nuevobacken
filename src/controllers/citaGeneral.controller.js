@@ -2,8 +2,8 @@ import CitaGeneral from "../models/citaGeneral.model.js";
 
 export const getCitasGeneral = async (req, res) => {
     try {
-        let conexion = await connectDB();
-        console.log("conexion a mongo", conexion);
+
+
         const citasGeneral = await CitaGeneral.find({ user: null }); // aqui es donde usamos el id del usuario AUTENTICADO para traer solo sus tareas, El .populate trae la info del usuario tambien
         res.json(citasGeneral);
     } catch (error) {
@@ -13,8 +13,8 @@ export const getCitasGeneral = async (req, res) => {
 
 export const getCitasGeneralUsuario = async (req, res) => {
     try {
-        let conexion = await connectDB();
-        console.log("conexion a mongo", conexion);
+
+
         const citasGeneralUsuario = await CitaGeneral.find({ user: req.user.id }).populate("user"); // aqui es donde usamos el id del usuario AUTENTICADO para traer solo sus tareas, El .populate trae la info del usuario tambien
         res.json(citasGeneralUsuario);
     } catch (error) {
@@ -24,8 +24,8 @@ export const getCitasGeneralUsuario = async (req, res) => {
 
 export const getCitasGeneralTutor = async (req, res) => {
     try {
-        let conexion = await connectDB();
-        console.log("conexion a mongo", conexion);
+
+
         const citasGeneralTutor = await CitaGeneral.find({ code: req.params.code }).populate("user"); // aqui es donde usamos el id del usuario AUTENTICADO para traer solo sus tareas, El .populate trae la info del usuario tambien
         res.json(citasGeneralTutor);
     } catch (error) {
@@ -35,8 +35,8 @@ export const getCitasGeneralTutor = async (req, res) => {
 
 export const createCitaGeneral = async (req, res) => {
     try {
-        let conexion = await connectDB();
-        console.log("conexion a mongo", conexion);
+
+
         const { tema, tutor, code, descripcion, hora, fecha } = req.body;
         const newCitaGeneral = new CitaGeneral({
             tema,
@@ -56,8 +56,8 @@ export const createCitaGeneral = async (req, res) => {
 
 export const deleteCitaGeneral = async (req, res) => {
     try {
-        let conexion = await connectDB();
-        console.log("conexion a mongo", conexion);
+
+
         const deletedCitaGeneral = await CitaGeneral.findByIdAndDelete(req.params.id);
         if (!deletedCitaGeneral)
             return res.status(404).json({ message: "CitaGeneral no encontrada" });
@@ -70,8 +70,8 @@ export const deleteCitaGeneral = async (req, res) => {
 
 export const updateCitaGeneral = async (req, res) => {
     try {
-        let conexion = await connectDB();
-        console.log("conexion a mongo", conexion);
+
+
         const { tema, code, descripcion, hora, fecha, user } = req.body;
         const citaGeneralUpdated = await CitaGeneral.findOneAndUpdate(
             { _id: req.params.id },
@@ -86,8 +86,8 @@ export const updateCitaGeneral = async (req, res) => {
 
 export const getCitaGeneral = async (req, res) => {
     try {
-        let conexion = await connectDB();
-        console.log("conexion a mongo", conexion);
+
+
         const citaGeneral = await CitaGeneral.findById(req.params.id); // .populate('user'); para traer en cada tarea los datos del usuario.
         if (!citaGeneral) return res.status(404).json({ message: "Tarea no encontrada" });
         return res.json(citaGeneral);
