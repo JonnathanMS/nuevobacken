@@ -16,7 +16,8 @@ const app = express(); // es basicamente el servidor
 //     credentials: true   // Esto permite establecer las cookies
 // })); // para establecer un dominio especifico que pueda acceder
 app.use(cors({
-    origin: 'https://portafolio2jonnathan2023.000webhostapp.com',
+    // origin: 'https://portafolio2jonnathan2023.000webhostapp.com',
+    origin: 'http://localhost:5173', // localmente
     credentials: true   // Esto permite establecer las cookies
 }));
 // permite que este otro dominio se puedea comunicar en este servidor
