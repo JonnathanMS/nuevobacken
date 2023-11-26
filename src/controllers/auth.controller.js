@@ -3,7 +3,7 @@ import User from '../models/user.model.js';
 import bcrypt from 'bcryptjs'; // modulo para encryptar la contraseña del usuario.
 import jwt from 'jsonwebtoken'; // genera un string que permite validar si ya habia habido autenticacion aqui usamos el modulo json webtoken 
 import { createAccessToken } from '../libs/jwt.js';
-import { TOKEN_SECRET } from '../config.js';
+import { TOKEN_SECRET, NODE_ENV } from '../config.js';
 
 
 
@@ -73,7 +73,13 @@ export const register = async (req, res) => {
 
         // res.json(userSaved); // aqui se envia toda la info del usuario, inclusive la contraseña, como respuesta al frontend
         const token = await createAccessToken({ id: userSaved._id });
-        res.cookie('token', token); // es un metodo de express para establecer una cookie dentro, se le llama 'token' y obtiene el valor de token que se genero en createAccesToken con jsonwebtoken jwt.
+        // res.cookie('token', token); // es un metodo de express para establecer una cookie dentro, se le llama 'token' y obtiene el valor de token que se genero en createAccesToken con jsonwebtoken jwt.
+
+        res.cookie('token', token, {
+            httpOnly: process.env.NODE_ENV !== "development",// en false nos permite ver la cookie en el panel Aplication del navegador.
+            secure: true,  // esta propiedad va unida, solo se enviará si la conexión es segura (HTTPS)
+            sameSite: 'none', // indica que la cookie no esta en el mismo dominio, porque estamos usando diferentes puertos para el back y el front o diferentes servidores
+        });
 
         // res.json({
         //     message: "Usuario creado Satisfactoriamente."
@@ -118,14 +124,14 @@ export const login = async (req, res) => {
         const token = await createAccessToken({ id: userFound._id });
 
         // es un metodo de express para establecer una cookie dentro, se le llama 'token' y obtiene el valor de token que se genero en createAccesToken de jsonwebtoken.
-        res.cookie('token', token);
+        // res.cookie('token', token);
 
         //¿Estas lineas se ponene para que en el navegador salga informacion sobre la cookie.
-        // res.cookie('token', token, {
-        //     sameSite: 'none', // indica que la cookie no esta en el mismo dominio, porque estamos usando diferentes puertos para el back y el front
-        //     secure: 'true',  // esta propiedad va unida
-        //     httpOnly: false  // en false nos permite ver la cookie en el panel Aplication del navegador.
-        // });
+        res.cookie('token', token, {
+            httpOnly: process.env.NODE_ENV !== "development",// en false nos permite ver la cookie en el panel Aplication del navegador.
+            secure: true,  // esta propiedad va unida, solo se enviará si la conexión es segura (HTTPS)
+            sameSite: 'none', // indica que la cookie no esta en el mismo dominio, porque estamos usando diferentes puertos para el back y el front o diferentes servidores
+        });
 
         res.json({
             id: userFound._id,
@@ -150,10 +156,12 @@ export const login = async (req, res) => {
 
 };
 
-export const logout = (req, res) => { // aqui estamos cambiando el tiempo de validez del token de autenticacion, por eso desloguea al usuario
+export const logout = async (req, res) => { // aqui estamos cambiando el tiempo de validez del token de autenticacion, por eso desloguea al usuario
     res.cookie('token', '',
         {
-            expires: new Date(0)
+            httpOnly: true,
+            secure: true,
+            expires: new Date(0),
         })
     return res.sendStatus(200);
 }

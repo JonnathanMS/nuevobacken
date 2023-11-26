@@ -1,12 +1,11 @@
 import mongoose from 'mongoose';
-// import { TOKEN_SECRET } from './config.js'
+import { MONGODB_URI } from './config.js'
 import dotenv from 'dotenv';
 dotenv.config();
 
 export const connectDB = async () => {
     try {
-        const url = process.env.MONGODB_CONNECT_URI;
-        await mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, connectTimeoutMS: 30000 })
+        await mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, connectTimeoutMS: 30000 })
         console.log("MongoDB is connected");
         // router.get("/", (req, res) => {
         //     res.send("Esta activo el backend")
